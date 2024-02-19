@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Produced with astropy.io.votable version 5.3.4
+     http://www.astropy.org/ -->
+<VOTABLE version="1.4" xmlns="http://www.ivoa.net/xml/VOTable/v1.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.3 http://www.ivoa.net/xml/VOTable/VOTable-1.4.xsd">
+ <RESOURCE type="results">
+  <TABLE>
+   <FIELD ID="solution_id" datatype="long" name="solution_id" ucd="meta.version">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="DESIGNATION" arraysize="28" datatype="char" name="DESIGNATION" ucd="meta.id;meta.main">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="source_id" datatype="long" name="source_id" ucd="meta.id">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="random_index" datatype="long" name="random_index" ucd="meta.code">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ref_epoch" datatype="double" name="ref_epoch" ucd="meta.ref;time.epoch" utype="stc:AstroCoords.Time.TimeInstant">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra" datatype="double" name="ra" ucd="pos.eq.ra;meta.main" utype="stc:AstroCoords.Position3D.Value3.C1">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra_error" datatype="float" name="ra_error" ucd="stat.error;pos.eq.ra" utype="stc:AstroCoords.Position3D.Error3.C1">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="dec" datatype="double" name="dec" ucd="pos.eq.dec;meta.main" utype="stc:AstroCoords.Position3D.Value3.C2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="dec_error" datatype="float" name="dec_error" ucd="stat.error;pos.eq.dec" utype="stc:AstroCoords.Position3D.Error3.C2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="parallax" datatype="double" name="parallax" ucd="pos.parallax.trig">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="parallax_error" datatype="float" name="parallax_error" ucd="stat.error;pos.parallax.trig">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="parallax_over_error" datatype="float" name="parallax_over_error" ucd="stat.snr;pos.parallax.trig">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pm" datatype="float" name="pm" ucd="pos.pm;pos.eq">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmra" datatype="double" name="pmra" ucd="pos.pm;pos.eq.ra" utype="stc:AstroCoords.Velocity3D.Value3.C1">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmra_error" datatype="float" name="pmra_error" ucd="stat.error;pos.pm;pos.eq.ra" utype="stc:AstroCoords.Velocity3D.Error3.C1">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmdec" datatype="double" name="pmdec" ucd="pos.pm;pos.eq.dec" utype="stc:AstroCoords.Velocity3D.Value3.C2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmdec_error" datatype="float" name="pmdec_error" ucd="stat.error;pos.pm;pos.eq.dec" utype="stc:AstroCoords.Velocity3D.Error3.C2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra_dec_corr" datatype="float" name="ra_dec_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra_parallax_corr" datatype="float" name="ra_parallax_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra_pmra_corr" datatype="float" name="ra_pmra_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra_pmdec_corr" datatype="float" name="ra_pmdec_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="dec_parallax_corr" datatype="float" name="dec_parallax_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="dec_pmra_corr" datatype="float" name="dec_pmra_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="dec_pmdec_corr" datatype="float" name="dec_pmdec_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="parallax_pmra_corr" datatype="float" name="parallax_pmra_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="parallax_pmdec_corr" datatype="float" name="parallax_pmdec_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmra_pmdec_corr" datatype="float" name="pmra_pmdec_corr" ucd="stat.correlation">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_n_obs_al" datatype="short" name="astrometric_n_obs_al" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_n_obs_ac" datatype="short" name="astrometric_n_obs_ac" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_n_good_obs_al" datatype="short" name="astrometric_n_good_obs_al" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_n_bad_obs_al" datatype="short" name="astrometric_n_bad_obs_al" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_gof_al" datatype="float" name="astrometric_gof_al" ucd="stat.fit.goodness">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_chi2_al" datatype="float" name="astrometric_chi2_al" ucd="stat.fit.chi2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_excess_noise" datatype="float" name="astrometric_excess_noise" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_excess_noise_sig" datatype="float" name="astrometric_excess_noise_sig" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_params_solved" datatype="short" name="astrometric_params_solved" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_primary_flag" datatype="bit" name="astrometric_primary_flag" ucd="meta.code">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="nu_eff_used_in_astrometry" datatype="float" name="nu_eff_used_in_astrometry" ucd="em.wavenumber">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pseudocolour" datatype="float" name="pseudocolour" ucd="em.wavenumber">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pseudocolour_error" datatype="float" name="pseudocolour_error" ucd="stat.error;em.wavenumber">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ra_pseudocolour_corr" datatype="float" name="ra_pseudocolour_corr" ucd="stat.correlation;em.wavenumber;pos.eq.ra">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="dec_pseudocolour_corr" datatype="float" name="dec_pseudocolour_corr" ucd="stat.correlation;em.wavenumber;pos.eq.dec">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="parallax_pseudocolour_corr" datatype="float" name="parallax_pseudocolour_corr" ucd="stat.correlation;em.wavenumber;pos.parallax">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmra_pseudocolour_corr" datatype="float" name="pmra_pseudocolour_corr" ucd="stat.correlation;em.wavenumber;pos.pm;pos.eq.ra">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="pmdec_pseudocolour_corr" datatype="float" name="pmdec_pseudocolour_corr" ucd="stat.correlation;em.wavenumber;pos.pm;pos.eq.dec">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_matched_transits" datatype="short" name="astrometric_matched_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="visibility_periods_used" datatype="short" name="visibility_periods_used" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="astrometric_sigma5d_max" datatype="float" name="astrometric_sigma5d_max" ucd="stat;pos.errorEllipse">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="matched_transits" datatype="short" name="matched_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="new_matched_transits" datatype="short" name="new_matched_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="matched_transits_removed" datatype="short" name="matched_transits_removed" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ipd_gof_harmonic_amplitude" datatype="float" name="ipd_gof_harmonic_amplitude" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ipd_gof_harmonic_phase" datatype="float" name="ipd_gof_harmonic_phase" ucd="pos.posAng;stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ipd_frac_multi_peak" datatype="short" name="ipd_frac_multi_peak" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ipd_frac_odd_win" datatype="short" name="ipd_frac_odd_win" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ruwe" datatype="float" name="ruwe" ucd="stat.error">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_strength_k1" datatype="float" name="scan_direction_strength_k1" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_strength_k2" datatype="float" name="scan_direction_strength_k2" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_strength_k3" datatype="float" name="scan_direction_strength_k3" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_strength_k4" datatype="float" name="scan_direction_strength_k4" ucd="stat.value">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_mean_k1" datatype="float" name="scan_direction_mean_k1" ucd="pos.posAng;stat.mean">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_mean_k2" datatype="float" name="scan_direction_mean_k2" ucd="pos.posAng;stat.mean">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_mean_k3" datatype="float" name="scan_direction_mean_k3" ucd="pos.posAng;stat.mean">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="scan_direction_mean_k4" datatype="float" name="scan_direction_mean_k4" ucd="pos.posAng;stat.mean">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="duplicated_source" datatype="bit" name="duplicated_source" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_g_n_obs" datatype="short" name="phot_g_n_obs" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_g_mean_flux" datatype="double" name="phot_g_mean_flux" ucd="phot.flux;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_g_mean_flux_error" datatype="float" name="phot_g_mean_flux_error" ucd="stat.error;phot.flux;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_g_mean_flux_over_error" datatype="float" name="phot_g_mean_flux_over_error" ucd="stat.snr;phot.flux;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_g_mean_mag" datatype="float" name="phot_g_mean_mag" ucd="phot.mag;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_n_obs" datatype="short" name="phot_bp_n_obs" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_mean_flux" datatype="double" name="phot_bp_mean_flux" ucd="phot.flux;em.opt.B">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_mean_flux_error" datatype="float" name="phot_bp_mean_flux_error" ucd="stat.error;phot.flux;em.opt.B">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_mean_flux_over_error" datatype="float" name="phot_bp_mean_flux_over_error" ucd="stat.snr;phot.flux;em.opt.B">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_mean_mag" datatype="float" name="phot_bp_mean_mag" ucd="phot.mag;em.opt.B">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_n_obs" datatype="short" name="phot_rp_n_obs" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_mean_flux" datatype="double" name="phot_rp_mean_flux" ucd="phot.flux;em.opt.R">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_mean_flux_error" datatype="float" name="phot_rp_mean_flux_error" ucd="stat.error;phot.flux;em.opt.R">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_mean_flux_over_error" datatype="float" name="phot_rp_mean_flux_over_error" ucd="stat.snr;phot.flux;em.opt.R">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_mean_mag" datatype="float" name="phot_rp_mean_mag" ucd="phot.mag;em.opt.R">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_rp_excess_factor" datatype="float" name="phot_bp_rp_excess_factor" ucd="arith.factor;phot.flux;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_n_contaminated_transits" datatype="short" name="phot_bp_n_contaminated_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_bp_n_blended_transits" datatype="short" name="phot_bp_n_blended_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_n_contaminated_transits" datatype="short" name="phot_rp_n_contaminated_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_rp_n_blended_transits" datatype="short" name="phot_rp_n_blended_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_proc_mode" datatype="short" name="phot_proc_mode" ucd="meta.code">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="bp_rp" datatype="float" name="bp_rp" ucd="phot.color;em.opt.B;em.opt.R">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="bp_g" datatype="float" name="bp_g" ucd="phot.color;em.opt.B;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="g_rp" datatype="float" name="g_rp" ucd="phot.color;em.opt;em.opt.R">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="radial_velocity" datatype="float" name="radial_velocity" ucd="spect.dopplerVeloc.opt;em.opt.I" utype="stc:AstroCoords.Velocity3D.Value3.C3">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="radial_velocity_error" datatype="float" name="radial_velocity_error" ucd="stat.error;spect.dopplerVeloc.opt;em.opt.I" utype="stc:AstroCoords.Velocity3D.Error3.C3">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_method_used" datatype="short" name="rv_method_used" ucd="meta.code.class">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_nb_transits" datatype="short" name="rv_nb_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_nb_deblended_transits" datatype="short" name="rv_nb_deblended_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_visibility_periods_used" datatype="short" name="rv_visibility_periods_used" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_expected_sig_to_noise" datatype="float" name="rv_expected_sig_to_noise" ucd="stat.snr">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_renormalised_gof" datatype="float" name="rv_renormalised_gof" ucd="stat.fit.goodness">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_chisq_pvalue" datatype="float" name="rv_chisq_pvalue" ucd="stat.fit.param">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_time_duration" datatype="float" name="rv_time_duration" ucd="time.duration">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_amplitude_robust" datatype="float" name="rv_amplitude_robust" ucd="stat.error;spect.dopplerVeloc.opt;em.opt.I">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_template_teff" datatype="float" name="rv_template_teff" ucd="stat.fit.param">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_template_logg" datatype="float" name="rv_template_logg" ucd="stat.fit.param">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_template_fe_h" datatype="float" name="rv_template_fe_h" ucd="stat.fit.param">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rv_atm_param_origin" datatype="short" name="rv_atm_param_origin" ucd="meta.code.class">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="vbroad" datatype="float" name="vbroad" ucd="spect.dopplerVeloc.opt;em.opt.I" utype="stc:AstroCoords.Velocity3D.Value3.C3">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="vbroad_error" datatype="float" name="vbroad_error" ucd="stat.error;spect.dopplerVeloc.opt;em.opt.I" utype="stc:AstroCoords.Velocity3D.Error3.C3">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="vbroad_nb_transits" datatype="short" name="vbroad_nb_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="grvs_mag" datatype="float" name="grvs_mag" ucd="phot.mag;em.opt" utype="stc:AstroCoords.Velocity3D.Value3.C3">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="grvs_mag_error" datatype="float" name="grvs_mag_error" ucd="stat.error;phot.mag;em.opt" utype="stc:AstroCoords.Velocity3D.Error3.C3">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="grvs_mag_nb_transits" datatype="short" name="grvs_mag_nb_transits" ucd="meta.number">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="rvs_spec_sig_to_noise" datatype="float" name="rvs_spec_sig_to_noise" ucd="stat.snr">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="phot_variable_flag" arraysize="13" datatype="char" name="phot_variable_flag" ucd="meta.code;src.var">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="l" datatype="double" name="l" ucd="pos.galactic.lon" utype="stc:AstroCoords.Position2D.Value2.C1">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="b" datatype="double" name="b" ucd="pos.galactic.lat" utype="stc:AstroCoords.Position2D.Value2.C2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ecl_lon" datatype="double" name="ecl_lon" ucd="pos.ecliptic.lon" utype="stc:AstroCoords.Position2D.Value2.C1">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ecl_lat" datatype="double" name="ecl_lat" ucd="pos.ecliptic.lat" utype="stc:AstroCoords.Position2D.Value2.C2">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="in_qso_candidates" datatype="bit" name="in_qso_candidates" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="in_galaxy_candidates" datatype="bit" name="in_galaxy_candidates" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="non_single_star" datatype="short" name="non_single_star" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_xp_continuous" datatype="bit" name="has_xp_continuous" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_xp_sampled" datatype="bit" name="has_xp_sampled" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_rvs" datatype="bit" name="has_rvs" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_epoch_photometry" datatype="bit" name="has_epoch_photometry" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_epoch_rv" datatype="bit" name="has_epoch_rv" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_mcmc_gspphot" datatype="bit" name="has_mcmc_gspphot" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="has_mcmc_msc" datatype="bit" name="has_mcmc_msc" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="in_andromeda_survey" datatype="bit" name="in_andromeda_survey" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="classprob_dsc_combmod_quasar" datatype="float" name="classprob_dsc_combmod_quasar" ucd="stat.probability">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="classprob_dsc_combmod_galaxy" datatype="float" name="classprob_dsc_combmod_galaxy" ucd="stat.probability">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="classprob_dsc_combmod_star" datatype="float" name="classprob_dsc_combmod_star" ucd="stat.probability">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="teff_gspphot" datatype="float" name="teff_gspphot" ucd="phys.temperature.effective">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="teff_gspphot_lower" datatype="float" name="teff_gspphot_lower" ucd="phys.temperature.effective;stat.min">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="teff_gspphot_upper" datatype="float" name="teff_gspphot_upper" ucd="phys.temperature.effective;stat.max">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="logg_gspphot" datatype="float" name="logg_gspphot" ucd="phys.gravity">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="logg_gspphot_lower" datatype="float" name="logg_gspphot_lower" ucd="phys.gravity;stat.min">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="logg_gspphot_upper" datatype="float" name="logg_gspphot_upper" ucd="phys.gravity;stat.max">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="mh_gspphot" datatype="float" name="mh_gspphot" ucd="phys.abund.Z">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="mh_gspphot_lower" datatype="float" name="mh_gspphot_lower" ucd="phys.abund.Z;stat.min">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="mh_gspphot_upper" datatype="float" name="mh_gspphot_upper" ucd="phys.abund.Z;stat.max">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="distance_gspphot" datatype="float" name="distance_gspphot" ucd="pos.distance;pos.eq">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="distance_gspphot_lower" datatype="float" name="distance_gspphot_lower" ucd="pos.distance;pos.eq">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="distance_gspphot_upper" datatype="float" name="distance_gspphot_upper" ucd="pos.distance;pos.eq">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="azero_gspphot" datatype="float" name="azero_gspphot" ucd="phys.absorption;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="azero_gspphot_lower" datatype="float" name="azero_gspphot_lower" ucd="phys.absorption;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="azero_gspphot_upper" datatype="float" name="azero_gspphot_upper" ucd="phys.absorption;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ag_gspphot" datatype="float" name="ag_gspphot" ucd="phys.absorption;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ag_gspphot_lower" datatype="float" name="ag_gspphot_lower" ucd="phys.absorption;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ag_gspphot_upper" datatype="float" name="ag_gspphot_upper" ucd="phys.absorption;em.opt">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ebpminrp_gspphot" datatype="float" name="ebpminrp_gspphot" ucd="phot.color.excess">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ebpminrp_gspphot_lower" datatype="float" name="ebpminrp_gspphot_lower" ucd="phot.color.excess;stat.min">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="ebpminrp_gspphot_upper" datatype="float" name="ebpminrp_gspphot_upper" ucd="phot.color.excess;stat.max">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="libname_gspphot" arraysize="5" datatype="char" name="libname_gspphot" ucd="meta.note">
+    <DESCRIPTION/>
+   </FIELD>
+   <DATA>
+    <TABLEDATA>
+     <TR>
+      <TD>1636148068921376768</TD>
+      <TD>Gaia DR3 2135550755683405952</TD>
+      <TD>2135550755683405952</TD>
+      <TD>882654490</TD>
+      <TD>2016</TD>
+      <TD>295.4529380382418</TD>
+      <TD>0.01928777</TD>
+      <TD>50.524354203106455</TD>
+      <TD>0.020860804</TD>
+      <TD>47.32389118459047</TD>
+      <TD>0.019748962</TD>
+      <TD>2396.2722</TD>
+      <TD>217.26575</TD>
+      <TD>-148.03360534410842</TD>
+      <TD>0.027583474</TD>
+      <TD>-159.02973218446795</TD>
+      <TD>0.02800343</TD>
+      <TD>0.04949988</TD>
+      <TD>0.032665927</TD>
+      <TD>-0.3718124</TD>
+      <TD>-0.100336134</TD>
+      <TD>0.10812813</TD>
+      <TD>-0.10719053</TD>
+      <TD>-0.42178458</TD>
+      <TD>-0.03614367</TD>
+      <TD>-0.17446502</TD>
+      <TD>0.12651275</TD>
+      <TD>267</TD>
+      <TD>267</TD>
+      <TD>264</TD>
+      <TD>3</TD>
+      <TD>0.1827708</TD>
+      <TD>1854.7074</TD>
+      <TD>0.18573453</TD>
+      <TD>46.92343</TD>
+      <TD>31</TD>
+      <TD>1</TD>
+      <TD>1.5662544</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>30</TD>
+      <TD>22</TD>
+      <TD>0.042219345</TD>
+      <TD>32</TD>
+      <TD>15</TD>
+      <TD>17</TD>
+      <TD>0.012073556</TD>
+      <TD>91.296616</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>1.0067511</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>0</TD>
+      <TD>275</TD>
+      <TD>88657896.6812009</TD>
+      <TD>38211.64</TD>
+      <TD>2320.1804</TD>
+      <TD>5.8180733</TD>
+      <TD>31</TD>
+      <TD>47758947.276990406</TD>
+      <TD>49554.254</TD>
+      <TD>963.7709</TD>
+      <TD>6.1409054</TD>
+      <TD>31</TD>
+      <TD>58626595.26699524</TD>
+      <TD>62817.484</TD>
+      <TD>933.28467</TD>
+      <TD>5.3276587</TD>
+      <TD>1.1999556</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>0.8132467</TD>
+      <TD>0.3228321</TD>
+      <TD>0.49041462</TD>
+      <TD>-27.309574</TD>
+      <TD>0.13396926</TD>
+      <TD>1</TD>
+      <TD>15</TD>
+      <TD>0</TD>
+      <TD>14</TD>
+      <TD>754.4476</TD>
+      <TD>-9999</TD>
+      <TD>0.012280669</TD>
+      <TD>823.37134</TD>
+      <TD>0.6648865</TD>
+      <TD>5750</TD>
+      <TD>4.5</TD>
+      <TD>0</TD>
+      <TD>222</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>-9999</TD>
+      <TD>5.162513</TD>
+      <TD>0.005166485</TD>
+      <TD>15</TD>
+      <TD>-9999</TD>
+      <TD>NOT_AVAILABLE</TD>
+      <TD>83.33872980012322</TD>
+      <TD>13.215070811802864</TD>
+      <TD>321.20599863253364</TD>
+      <TD>69.4785445706302</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>1</TD>
+      <TD>1</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>1</TD>
+      <TD>1</TD>
+      <TD>0</TD>
+      <TD>1.1961469e-13</TD>
+      <TD>5.974694e-13</TD>
+      <TD>0.9982583</TD>
+      <TD>5665.8633</TD>
+      <TD>5664.7715</TD>
+      <TD>5666.812</TD>
+      <TD>4.2665</TD>
+      <TD>4.2656</TD>
+      <TD>4.2672</TD>
+      <TD>-0.2936</TD>
+      <TD>-0.3024</TD>
+      <TD>-0.2849</TD>
+      <TD>21.1208</TD>
+      <TD>21.1121</TD>
+      <TD>21.1296</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>1e-04</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>1e-04</TD>
+      <TD>0</TD>
+      <TD>0</TD>
+      <TD>1e-04</TD>
+      <TD>MARCS</TD>
+     </TR>
+    </TABLEDATA>
+   </DATA>
+  </TABLE>
+ </RESOURCE>
+</VOTABLE>

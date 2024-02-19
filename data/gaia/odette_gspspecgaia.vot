@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Produced with astropy.io.votable version 5.3.4
+     http://www.astropy.org/ -->
+<VOTABLE version="1.4" xmlns="http://www.ivoa.net/xml/VOTable/v1.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.3 http://www.ivoa.net/xml/VOTable/VOTable-1.4.xsd">
+ <RESOURCE type="results">
+  <TABLE>
+   <FIELD ID="source_id" datatype="long" name="source_id" ucd="meta.id;meta.main">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="teff_gspspec" datatype="float" name="teff_gspspec" ucd="phys.temperature.effective;stat.median">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="teff_gspspec_lower" datatype="float" name="teff_gspspec_lower" ucd="stat.value;phys.temperature.effective">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="teff_gspspec_upper" datatype="float" name="teff_gspspec_upper" ucd="stat.value;phys.temperature.effective">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="mh_gspspec" datatype="float" name="mh_gspspec" ucd="phys.abund.Fe;stat.median">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="mh_gspspec_lower" datatype="float" name="mh_gspspec_lower" ucd="stat.value;phys.abund.Fe">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="mh_gspspec_upper" datatype="float" name="mh_gspspec_upper" ucd="stat.value;phys.abund.Fe">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="alphafe_gspspec" datatype="float" name="alphafe_gspspec" ucd="phys.abund;stat.median">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="alphafe_gspspec_lower" datatype="float" name="alphafe_gspspec_lower" ucd="stat.value;phys.abund">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="alphafe_gspspec_upper" datatype="float" name="alphafe_gspspec_upper" ucd="stat.value;phys.abund">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="logg_gspspec" datatype="float" name="logg_gspspec" ucd="phys.gravity;stat.median">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="logg_gspspec_lower" datatype="float" name="logg_gspspec_lower" ucd="stat.value;phys.gravity">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="logg_gspspec_upper" datatype="float" name="logg_gspspec_upper" ucd="stat.value;phys.gravity">
+    <DESCRIPTION/>
+   </FIELD>
+   <FIELD ID="flags_gspspec" arraysize="41" datatype="char" name="flags_gspspec" ucd="meta.code.status">
+    <DESCRIPTION/>
+   </FIELD>
+   <DATA>
+    <TABLEDATA>
+     <TR>
+      <TD>2135550755683405952</TD>
+      <TD>5812</TD>
+      <TD>5804</TD>
+      <TD>5817</TD>
+      <TD>0.03</TD>
+      <TD>0.03</TD>
+      <TD>0.03</TD>
+      <TD>0.05</TD>
+      <TD>0.05</TD>
+      <TD>0.05</TD>
+      <TD>4.05</TD>
+      <TD>4.04</TD>
+      <TD>4.07</TD>
+      <TD>00000000000000000000000009900000099999995</TD>
+     </TR>
+    </TABLEDATA>
+   </DATA>
+  </TABLE>
+ </RESOURCE>
+</VOTABLE>
