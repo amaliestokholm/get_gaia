@@ -22,21 +22,22 @@ import pandas as pd
 
 # Gaia specific
 def find_gaia_from_sourceids(
-    filename,
-    keytable,
-    dr=constants.newestgaiadr,
-    gaiacat=None,
-    source_id="source_id",
-    frmt="votable",
-    cols=None,
+    filename: str,
+    keytable: Table,
+    dr: str = "DR3",
+    gaiacat: str | None = None,
+    source_id: str = "source_id",
+    frmt: str = "votable",
+    cols: list | None = None,
+    chunk: int = 1000,
 ):
     if os.path.exists(filename):
         table = Table.read(filename, format=frmt)
         table = standardize(table)
     else:
-        chunk = 1000
         chunks = []
         gaia = TapPlus(url="https://gea.esac.esa.int/tap-server/tap")
+
         if dr == "DR2":
             if not "SOURCE_ID_GAIADR2" in keytable.columns:
                 keytable.rename_column("SOURCE_ID_GAIA", "SOURCE_ID_GAIADR2")
@@ -58,11 +59,13 @@ def find_gaia_from_sourceids(
 
         if cols is None:
             cols = "*"
+
         # Fix bug in astropy
         # tapContext ends with a slash, but it shouldn't!
         gaia._Tap__connHandler._TapConn__tapContext = "/tap-server/tap"
         # If you get a SSL: DL KEY TOO SMALL error on your server/laptop do this:
         ssl._DEFAULT_CIPHERS += ":!DH"
+
         for j in range(0, len(stars), chunk):
             print(f"Make {filename}, progress: {j}/{len(stars)}")
             job = gaia.launch_job(
@@ -94,10 +97,20 @@ def find_gaia_from_sourceids(
     return table
 
 
-def compute_gaiaphotometryerror(table, dr=constants.newestgaiadr, verbose=False):
+def compute_gaiaphotometryerror(
+        table: Table,
+        dr: str = "DR3",
+        verbose: bool = False,
+        error_gmag: str = "phot_g_mean_flux_error",
+        gmag: str = "phot_g_mean_flux",
+        error_bpmag: str = "phot_bp_mean_flux_error",
+        bpmag: str = "phot_bp_mean_flux",
+        error_rpmag: str = "phot_rp_mean_flux_error",
+        rpmag: str = "phot_rp_mean_flux",
+        ):
     # Compute photometry errors in magnitudes and a floor of 2.3 mmag in
     # quadrature as discussed in Arenou et al. 2018
-    usedcols = ["ERROR_PHOT_G_MEAN_FLUX_GAIA", "PHOT_G_MEAN_FLUX_GAIA"]
+    usedcols = [gmag, error_gmag]
     for uc in usedcols:
         if uc not in table.columns:
             if verbose:
@@ -119,26 +132,26 @@ def compute_gaiaphotometryerror(table, dr=constants.newestgaiadr, verbose=False)
         # https://vizier.cds.unistra.fr/viz-bin/VizieR-n?-source=METAnot&catid=1350&notid=63&-out=text
         relcoeff = 1
         G_err = magerror(
-            "ERROR_PHOT_G_MEAN_FLUX_GAIA",
-            "PHOT_G_MEAN_FLUX_GAIA",
-            table,
-            relcoeff,
-            0.0027553202,
-        )
+                error_gmag,
+                gmag,
+                table,
+                relcoeff,
+                0.0027553202,
+                )
         BP_err = magerror(
-            "ERROR_PHOT_BP_MEAN_FLUX_GAIA",
-            "PHOT_BP_MEAN_FLUX_GAIA",
-            table,
-            relcoeff,
-            0.0027901700,
-        )
+                error_bpmag,
+                bpmag,
+                table,
+                relcoeff,
+                0.0027901700,
+                )
         RP_err = magerror(
-            "ERROR_PHOT_RP_MEAN_FLUX_GAIA",
-            "PHOT_RP_MEAN_FLUX_GAIA",
-            table,
-            relcoeff,
-            0.0037793818,
-        )
+                error_rpmag,
+                rpmag,
+                table,
+                relcoeff,
+                0.0037793818,
+                )
     else:
         print("Gaia data release version unknown\n")
         return table
@@ -152,7 +165,7 @@ def compute_gaiaphotometryerror(table, dr=constants.newestgaiadr, verbose=False)
     return table
 
 
-def adql_escape(star):
+def adql_escape(star: str):
     """
     A function that can make stings in the right format for adql queries.
     Inspiration from https://github.com/
@@ -162,13 +175,22 @@ def adql_escape(star):
 
 
 def add_parallaxwithoffset(
-    table, dr=constants.newestgaiadr, singleoffset=False, verbose=False
-):
+        table: Table,
+        dr: str = "DR3",
+        parallaxcol : str = "parallax",
+        singleoffset: bool = False,
+        verbose: bool = False,
+        gmag : str = "phot_g_mean_mag",
+        pseudocolour : str = "pseudocolour",
+        nueff : str = "nu_eff_used_in_astrometry",
+        ecl : str = "ecl_lat",
+        paramssolved : str = "astrometric_params_solved",
+        ):
     # Here we add the parallax columns with different offsets:
-    if "PARALLAX_GAIA" in table.columns:
-        table.rename_column("PARALLAX_GAIA", "UNCORRECTED_PARALLAX_GAIA")
+    assert parallaxcol in table.columns
+    table.rename_column(parallaxcol, f"UNCORRECTED_{parallaxcol}")
 
-    usedcols = ["UNCORRECTED_PARALLAX_GAIA"]
+    usedcols = [f"UNCORRECTED_{parallaxcol}"]
     for uc in usedcols:
         if uc not in table.columns:
             if verbose:
@@ -180,24 +202,19 @@ def add_parallaxwithoffset(
         if singleoffset:
             # Gaia Collaboration 2021a (https://arxiv.org/abs/2012.01533) offset
             # of 17 mas computed from quasars.
-            floatfill = get_fillvalue(table["UNCORRECTED_PARALLAX_GAIA"])
+            floatfill = get_fillvalue(table[f"UNCORRECTED_{parallaxcol}"])
             corrpar = np.ones(len(table)) * floatfill
-            corrparmask = table["UNCORRECTED_PARALLAX_GAIA"] != floatfill
+            corrparmask = table[f"UNCORRECTED_{parallaxcol}"] != floatfill
 
             st_par = np.copy(corrpar)
             st_par[corrparmask] = (
-                table["UNCORRECTED_PARALLAX_GAIA"][corrparmask] + 0.017
+                table[f"UNCORRECTED_{parallaxcol}"][corrparmask] + 0.017
             )
             st_par = Column(st_par, name="PARALLAX_GLOBALOFFSET_GAIA")
             table.add_column(st_par)
         else:
             # Here I will use the correction from
             # https://gitlab.com/icc-ub/public/gaiadr3_zeropoint
-            gmag = "PHOT_G_MEAN_MAG_GAIA"
-            pseudocolour = "PSEUDOCOLOUR_GAIA"
-            nueff = "NU_EFF_ASTROMETRY_GAIA"
-            ecl = "ECL_LAT_GAIA"
-            paramssolved = "ASTROMETRIC_PARAMS_SOLVED_GAIA"
             usedcols = [gmag, pseudocolour, nueff, ecl, paramssolved]
             for uc in usedcols:
                 if uc not in table.columns:
@@ -208,9 +225,9 @@ def add_parallaxwithoffset(
 
             zpt.load_tables()
 
-            floatfill = get_fillvalue(table["UNCORRECTED_PARALLAX_GAIA"])
+            floatfill = get_fillvalue(table[f"UNCORRECTED_{parallaxcol}"])
             corrpar = np.ones(len(table)) * floatfill
-            corrparmask = table["UNCORRECTED_PARALLAX_GAIA"] != floatfill
+            corrparmask = table[f"UNCORRECTED_{parallaxcol}"] != floatfill
 
             corr = zpt.get_zpt(
                 table[gmag][corrparmask],
@@ -248,7 +265,7 @@ def add_parallaxwithoffset(
 
             # Add corrected parallax as a column
             st_par = np.copy(corrpar)
-            st_par[corrparmask] = table["UNCORRECTED_PARALLAX_GAIA"][corrparmask] - corr
+            st_par[corrparmask] = table[f"UNCORRECTED_{parallaxcol}"][corrparmask] - corr
             st_par = Column(st_par, name="PARALLAX_GAIA")
             table.add_column(st_par)
             table.add_column(warncol)
@@ -259,7 +276,14 @@ def add_parallaxwithoffset(
 
 
 # Clean and groom cats
-def standardize(table, catid=None, label=None, old=None, debug=False, remove=True):
+def standardize(
+    table: Table,
+    catid: str | None = None,
+    label: None | str = None,
+    old: str | None = None,
+    debug: bool = False,
+    remove: bool = True,
+):
     # This function is a very scrapped version of the one in Skycats.
     table = check_columns_for_objects(table)
     for col in table.columns:
@@ -274,7 +298,7 @@ def standardize(table, catid=None, label=None, old=None, debug=False, remove=Tru
     return table
 
 
-def check_columns_for_objects(table, verbose=False):
+def check_columns_for_objects(table: Table, verbose: bool = False):
     for col in table.colnames:
         if table[col].dtype == "object":
             if verbose:
@@ -292,7 +316,7 @@ def get_fillvalue(col):
         raise NotImplementedError(col.dtype.kind)
 
 
-def make_ids_to_string(table):
+def make_ids_to_string(table: Table):
     ids = [
         "LABEL",
         "KIC_ID",
@@ -312,20 +336,20 @@ def make_ids_to_string(table):
         "SOURCE_ID_GAIAEDR3",
         "TIC_ID",
     ]
-    for id in constants.ids:
+    for id in ids:
         if id in table.columns:
             table[id] = table[id].astype("U")
     return table
 
 
-def make_objects_to_unicode(table):
+def make_objects_to_unicode(table: Table):
     for col in table.columns:
         if table[col].dtype.kind in ["S", "object"]:
             table[col] = table[col].astype("str")
     return table
 
 
-def replace_old_fillvalue(table, olds):
+def replace_old_fillvalue(table: Table, olds: list | float | str):
     if type(olds) is not list:
         olds = [olds]
     for old in olds:

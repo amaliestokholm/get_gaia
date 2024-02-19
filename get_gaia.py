@@ -32,38 +32,51 @@ gspspeccols = [
 
 
 # Actually do stuff
-a = Table.read("./data/targetlist.ascii", format="ascii")
-print(
-    f"Length of table is {len(a)}, number of unique targets is {len(np.unique(a[starid]))}"
-)
-
+a = Table.read(targetlist, format="ascii.commented_header")
+print(f"Length of table is {len(a)}")
+print(f"Number of unique targets is {len(np.unique(a[starid]))}")
 if starid == "sourceid":
-    a.rename_column("starid", "SOURCE_ID_GAIA")
+    a.rename_column("sourceid", starid)
+
+if not os.path.exists(tempdir):
+    os.makedirs(tempdir)
+
+if isinstance(a, Column):
+    a = Table(data=a, name=starid)
 
 gaiatable = funkykitten.find_gaia_from_sourceids(
-    f"./data/gaia/{projectname}_gaia.vot",
+    os.path.join(tempdir, f"{projectname}_gaia.vot"),
     keytable=a,
     dr="DR3",
 )
+gaiatable = funkykitten.standardize(gaiatable)
+
+if "source_id" in list(gaiatable.columns):
+    gaiatable.rename_column("source_id", starid)
+
 gaiatable = funkykitten.add_parallaxwithoffset(gaiatable, dr="DR3")
 gaiatable.rename_column("PARALLAX_GAIA", "ZPCORR_PARALLAX_GAIA")
 
 gspspeccols = ", ".join(gspspeccols)
 
 gspspectable = funkykitten.find_gaia_from_sourceids(
-    f"./data/gaia/{projectname}_gspspecgaia.vot",
-    keytable=a["SOURCE_ID_GAIA"],
+    os.path.join(tempdir, f"{projectname}_gspspecgaia.vot"),
+    keytable=a,
     dr="DR3",
     gaiacat="gaiadr3.astrophysical_parameters",
     cols=gspspeccols,
 )
 
 gspspectable = gspspec.calibrate_all_gspspec(gspspectable)
-for col in gspspectable.columns:
+
+# Get overview
+for col in list(gspspectable.columns):
     if "_CALIBRATED" in col:
         print(col)
+    elif col == "source_id":
+        gspspectable.rename_column(col, starid)
 
-gaiatable = join(gaiatable, gspspectable, join_type="left", keys="SOURCE_ID_GAIA")
+gaiatable = join(gaiatable, gspspectable, join_type="left", keys=starid)
 
 gaiatable = funkykitten.compute_gaiaphotometryerror(gaiatable, dr="DR3", verbose=True)
 
@@ -74,7 +87,7 @@ gaiatable.write(
 )
 
 keepcols = [
-    "SOURCE_ID_GAIA",
+    starid,
     "ZPCORR_PARALLAX_GAIA",
     "WARNINGS_PARALLAXOFFSET_GAIA",
     "TEFF_GSPSPEC_GAIA",
@@ -104,12 +117,20 @@ keepcols = [
     "ERROR_PHOT_RP_MEAN_FLUX_GAIA",
 ]
 
-a["SOURCE_ID_GAIA"] = a["SOURCE_ID_GAIA"].astype(str)
+a[starid] = a[starid].astype(str)
+gaiatable[starid] = gaiatable[starid].astype(str)
+tokeep = list(set(gaiatable.columns) & set(keepcols))
+
+if not os.path.exists(resultdir):
+    os.makedirs(resultdir)
+
+resultsfile = os.path.join(resultdir, resultsfile)
+print(f"Writing the following columns to {resultsfile}: {tokeep}")
 
 b = join(
     a,
-    gaiatable[keepcols],
+    gaiatable[tokeep],
     join_type="left",
 )
-b.rename_column("SOURCE_ID_GAIA", "starid")
-b.write("./data/sample.ascii", format="ascii.commented_header", overwrite=True)
+b.rename_column(starid, "starid")
+b.write(resultsfile, format="ascii.commented_header", overwrite=True)

@@ -1,5 +1,4 @@
 import sys
-
 import numpy as np
 from astropy.table import Table, Column
 
@@ -185,7 +184,7 @@ def recioblanco22_calibration(
     return caldata, validflag
 
 
-def calibrate_table(table, col, func="logg"):
+def calibrate_table(table: Table, col: str, func: str = "logg"):
     if func == "teff":
         funccol = "TEFF_GSPSPEC_GAIA"
         funcstr = "_TEFF"
@@ -254,7 +253,7 @@ def calibrate_table(table, col, func="logg"):
     return table
 
 
-def calibrate_all_gspspec(table):
+def calibrate_all_gspspec(table: Table, verbose: bool = False):
     calcols = [
         "ALPHAFE_GSPSPEC_GAIA",
         "CAFE_GSPSPEC_GAIA",
@@ -276,7 +275,8 @@ def calibrate_all_gspspec(table):
         if col in table.columns:
             table = calibrate_table(table, col, func=func)
         else:
-            print(f"{col} not in table for {func} calibration")
+            if verbose:
+                print(f"{col} not in table for {func} calibration")
 
     calcols = [
         "ALPHAFE_GSPSPEC_GAIA",
