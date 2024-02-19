@@ -1,13 +1,19 @@
 # Get Gaia values from Gaia DR3 source_id
 # Amalie Stokholm
 
+import os
 import numpy as np
-from astropy.table import Table, join
+from astropy.table import Table, Column, join
 import funkykitten
 import gspspec
 
 # Specify stuff here
 starid = "SOURCE_ID_GAIA"
+projectname = "odette"
+targetlist = "./data/targetlist.ascii"
+tempdir = "./data/gaia"
+resultdir = './results/'
+resultsfile = "sample.ascii"
 
 # Which columns in 'gaiadr3.astrophysical_parameters' do you want to keep?
 gspspeccols = [
