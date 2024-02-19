@@ -1,3 +1,4 @@
 data/gaia/*
 __pycache__/
 results/
+data/sample.ascii
