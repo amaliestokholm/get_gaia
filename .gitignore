@@ -1,0 +1,3 @@
+./data/gaia/*
+__pycache__/
+./results/
