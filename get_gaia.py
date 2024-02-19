@@ -10,9 +10,9 @@ import gspspec
 # Specify stuff here
 starid = "SOURCE_ID_GAIA"
 projectname = "odette"
-targetlist = "./data/targetlist.ascii"
-tempdir = "./data/gaia"
-resultdir = './results/'
+targetlist = "./example/targetlist.ascii"
+tempdir = "./example/gaia"
+resultdir = "./results/"
 resultsfile = "sample.ascii"
 
 # Which columns in 'gaiadr3.astrophysical_parameters' do you want to keep?
@@ -87,7 +87,7 @@ gaiatable = join(gaiatable, gspspectable, join_type="left", keys=starid)
 gaiatable = funkykitten.compute_gaiaphotometryerror(gaiatable, dr="DR3", verbose=True)
 
 gaiatable.write(
-    f"./data/gaiatable_{projectname}.ascii",
+    os.path.join(tempdir, f"gaiatable_{projectname}.ascii"),
     format="ascii.commented_header",
     overwrite=True,
 )

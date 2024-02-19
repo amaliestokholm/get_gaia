@@ -1,4 +1,4 @@
-data/gaia/*
+example/gaia/*
 __pycache__/
 results/
-data/sample.ascii
+example/sample.ascii
