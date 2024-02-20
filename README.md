@@ -2,6 +2,14 @@
 This is just a small collection of scripts that makes Gaia querying easier.
 Most of this are snippets from the `skycats` repository.
 
+#### Installation
+Clone this repository, activate your virtual environment and check the requirements.
+```
+git clone git@github.com:amaliestokholm/get_gaia.git
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## I have a single target and I know the Gaia DR3 source\_id.
 ```
