@@ -1,0 +1,6 @@
+astropy==5.3.4
+astroquery==0.4.6
+gaiadr3_zeropoint==0.0.4
+gdr3apcal==0.4
+natsort==8.4.0
+numpy==1.21.5
