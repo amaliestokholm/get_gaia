@@ -17,11 +17,17 @@ Alternatively, you can add your Gaia DR3 source\_id to a file
 python3 get_gaia.py --targetlist "./example/targetlist.ascii"
 ```
 
+This way you get the Gaia parameters directly from the main catalogue.
+I also correct the parallax for the parallax offset ('ZPCORR\_PARALLAX\_GAIA') and compute the Gaia photometry uncertainties and add them to the table.
+
 ## I want the GSP-Spec values for my target!
 Add the flag `--gspspec`
 ```
 python3 get_gaia.py --gspspec
 ```
+
+This gets you the Gaia DR3 GSP-Spec values - however, only the columns specified in `get_gspspec` in `get_gaia.py`. Feel free to add to the list if you need additional columns.
+These columns will also be calibrated according to Recio-Blanco et al. 2022 and these calibrated columns are added to the table as well.
 
 ## I want the FLAME results based on GSP-Spec instead of GSP-Phot!
 This I have not added to this repository yet - just write me or make an issue and I'll add it :)
