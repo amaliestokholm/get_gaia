@@ -10,14 +10,9 @@ import warnings
 import numpy as np
 from natsort import natsorted
 from astropy.table import Table, join, vstack, unique, Column
-from astropy import units as u
-from astropy.time import Time
-from astroquery.xmatch import XMatch
 from astroquery.utils.tap.core import TapPlus
 
 from zero_point import zpt
-import gdr3apcal
-import pandas as pd
 
 
 # Gaia specific
@@ -98,16 +93,16 @@ def find_gaia_from_sourceids(
 
 
 def compute_gaiaphotometryerror(
-        table: Table,
-        dr: str = "DR3",
-        verbose: bool = False,
-        error_gmag: str = "phot_g_mean_flux_error",
-        gmag: str = "phot_g_mean_flux",
-        error_bpmag: str = "phot_bp_mean_flux_error",
-        bpmag: str = "phot_bp_mean_flux",
-        error_rpmag: str = "phot_rp_mean_flux_error",
-        rpmag: str = "phot_rp_mean_flux",
-        ):
+    table: Table,
+    dr: str = "DR3",
+    verbose: bool = False,
+    error_gmag: str = "phot_g_mean_flux_error",
+    gmag: str = "phot_g_mean_flux",
+    error_bpmag: str = "phot_bp_mean_flux_error",
+    bpmag: str = "phot_bp_mean_flux",
+    error_rpmag: str = "phot_rp_mean_flux_error",
+    rpmag: str = "phot_rp_mean_flux",
+):
     # Compute photometry errors in magnitudes and a floor of 2.3 mmag in
     # quadrature as discussed in Arenou et al. 2018
     usedcols = [gmag, error_gmag]
@@ -132,26 +127,26 @@ def compute_gaiaphotometryerror(
         # https://vizier.cds.unistra.fr/viz-bin/VizieR-n?-source=METAnot&catid=1350&notid=63&-out=text
         relcoeff = 1
         G_err = magerror(
-                error_gmag,
-                gmag,
-                table,
-                relcoeff,
-                0.0027553202,
-                )
+            error_gmag,
+            gmag,
+            table,
+            relcoeff,
+            0.0027553202,
+        )
         BP_err = magerror(
-                error_bpmag,
-                bpmag,
-                table,
-                relcoeff,
-                0.0027901700,
-                )
+            error_bpmag,
+            bpmag,
+            table,
+            relcoeff,
+            0.0027901700,
+        )
         RP_err = magerror(
-                error_rpmag,
-                rpmag,
-                table,
-                relcoeff,
-                0.0037793818,
-                )
+            error_rpmag,
+            rpmag,
+            table,
+            relcoeff,
+            0.0037793818,
+        )
     else:
         print("Gaia data release version unknown\n")
         return table
@@ -175,17 +170,17 @@ def adql_escape(star: str):
 
 
 def add_parallaxwithoffset(
-        table: Table,
-        dr: str = "DR3",
-        parallaxcol : str = "parallax",
-        singleoffset: bool = False,
-        verbose: bool = False,
-        gmag : str = "phot_g_mean_mag",
-        pseudocolour : str = "pseudocolour",
-        nueff : str = "nu_eff_used_in_astrometry",
-        ecl : str = "ecl_lat",
-        paramssolved : str = "astrometric_params_solved",
-        ):
+    table: Table,
+    dr: str = "DR3",
+    parallaxcol: str = "parallax",
+    singleoffset: bool = False,
+    verbose: bool = False,
+    gmag: str = "phot_g_mean_mag",
+    pseudocolour: str = "pseudocolour",
+    nueff: str = "nu_eff_used_in_astrometry",
+    ecl: str = "ecl_lat",
+    paramssolved: str = "astrometric_params_solved",
+):
     # Here we add the parallax columns with different offsets:
     assert parallaxcol in table.columns
     table.rename_column(parallaxcol, f"UNCORRECTED_{parallaxcol}")
@@ -265,7 +260,9 @@ def add_parallaxwithoffset(
 
             # Add corrected parallax as a column
             st_par = np.copy(corrpar)
-            st_par[corrparmask] = table[f"UNCORRECTED_{parallaxcol}"][corrparmask] - corr
+            st_par[corrparmask] = (
+                table[f"UNCORRECTED_{parallaxcol}"][corrparmask] - corr
+            )
             st_par = Column(st_par, name="PARALLAX_GAIA")
             table.add_column(st_par)
             table.add_column(warncol)

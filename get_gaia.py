@@ -2,11 +2,12 @@
 # Amalie Stokholm
 
 import os
+import argparse
 import numpy as np
 from astropy.table import Table, Column, join
+
 import funkykitten
 import gspspec
-import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--identifier")
@@ -17,7 +18,7 @@ parser.add_argument("--dr", default="DR3")
 parser.add_argument("--tempdir", default="./example/gaia")
 parser.add_argument("--resultdir", default="./results")
 parser.add_argument("--resultsfile", default="sample.ascii")
-parser.add_argument("--gspspec", action='store_true')
+parser.add_argument("--gspspec", action="store_true")
 
 
 def get_gaiamain(
@@ -58,15 +59,15 @@ def get_gaiamain(
 
 
 def get_gspspec(
-        a: Table,
-        gaiatable: Table,
-        projectname: str,
-        dr: str = "DR3",
-        starid: str = "SOURCE_ID_GAIA",
-        tempdir: str = "./example/gaia/",
-        resultdir: str = "./results",
-        resultsfile: str = "sample.ascii",
-        ):
+    a: Table,
+    gaiatable: Table,
+    projectname: str,
+    dr: str = "DR3",
+    starid: str = "SOURCE_ID_GAIA",
+    tempdir: str = "./example/gaia/",
+    resultdir: str = "./results",
+    resultsfile: str = "sample.ascii",
+):
     # Which columns in 'gaiadr3.astrophysical_parameters' do you want to keep?
     gspspeccols = [
         "source_id",
@@ -145,7 +146,9 @@ def get_gspspec(
     gaiatable[starid] = gaiatable[starid].astype(str)
     tokeep = list(set(gaiatable.columns) & set(keepcols))
 
-    resultsfile = os.path.join(resultdir, f"{resultsfile.split('.')[0]}_gspspec.{resultsfile.split('.')[-1]}")
+    resultsfile = os.path.join(
+        resultdir, f"{resultsfile.split('.')[0]}_gspspec.{resultsfile.split('.')[-1]}"
+    )
     print(f"Writing the following columns to {resultsfile}: {tokeep}")
 
     b = join(
