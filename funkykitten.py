@@ -75,6 +75,7 @@ def find_gaia_from_sourceids(
             tempttable = job.get_results()
             chunks.append(tempttable)
         table = vstack(chunks)
+
         if "gaia_source" in gaiacat:
             table = standardize(table, catid="GAIA")
             if dr == "DR2":

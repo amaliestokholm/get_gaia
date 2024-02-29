@@ -293,6 +293,244 @@ def calibrate_all_gspspec(table: Table, verbose: bool = False):
     return table
 
 
+def flags_gspspec_check(
+    positions,
+    values,
+    operations=None,
+    table=None,
+    data=None,
+    col="FLAGS_GSPSPEC_GAIA",
+    strfill="",
+) -> np.ndarray:
+    """
+    This function is also in skycats/cattoys.
+    This function outputs a mask that has at least one of the values in its associated positions.
+
+    Example
+    -------
+    >>> testdata = np.asarray(['001','000','011',])
+    >>> vals = ['1','1']
+    >>> poss = [1, 2]
+    >>> flags_gspspec_check(values=vals, positions=poss, data=testdata)
+    [False False  True]
+    """
+    assert len(positions) == len(values)
+    if data is None:
+        assert table is not None
+        data = table[col]
+    assert isinstance(data, np.ndarray)
+    if operations is None:
+        operations = list("e" * len(data))
+    else:
+        assert isinstance(operations, list)
+        assert len(operations) == len(values), len(operations)
+        assert [op in ["e", "ge", "le"] for op in operations]
+
+    m = np.ones(len(data), dtype=bool)
+    for pos, val, op in zip(positions, values, operations):
+        if op == "e":
+            m &= np.array([idstr != strfill and int(idstr[pos]) == int(val) for idstr in data])
+        elif op == "ge":
+            m &= np.array([idstr != strfill and int(idstr[pos]) >= int(val) for idstr in data])
+        elif op == "le":
+            m &= np.array([idstr != strfill and int(idstr[pos]) <= int(val) for idstr in data])
+        else:
+            raise ValueError(f"Operation unknown {op}")
+    return m
+
+
+def generate_flagpositions(flags) -> list:
+    """
+    This function is also in skycats/cattoys.
+    This is the implementation of Table 2 in Recio-Blanco+2022
+    """
+    assert isinstance(flags, list)
+    positions = []
+    for flag in flags:
+        if flag in ["vbroadT", "FlagVsiniT"]:
+            # vbroad induced bias in Teff, [0 1 2 9]
+            positions.append(0)
+        elif flag in ["vbroadG", "FlagVsiniG"]:
+            # vbroad induced bias in logg, [0 1 2 9]
+            positions.append(1)
+        elif flag in ["vbroadM", "FlagVsiniM"]:
+            # vbroad induced bias in [M/H], [0 1 2 9]
+            positions.append(2)
+        elif flag in ["vradT", "FlagVradT"]:
+            # V_Rad induced bias in Teff, [0 1 2 9]
+            positions.append(3)
+        elif flag in ["vradG", "FlagVradG"]:
+            # V_Rad induced bias in logg, [0 1 2 9]
+            positions.append(4)
+        elif flag in ["vradM", "FlagVradM"]:
+            # V_Rad induced bias in [M/H], [0 1 2 9]
+            positions.append(5)
+        elif flag in ["fluxNoise", "FlagNoise"]:
+            # Flux noise induced uncertainties, [0 1 2 3 4 5 9]
+            positions.append(6)
+        elif flag in ["extrapol", "FlagExtraP"]:
+            # Extrapolation level of the parametrisation, [0 1 2 3 4 9]
+            positions.append(7)
+        elif flag in ["negFlux", "FlagNegFlux"]:
+            # Negative flux, [0 1 9]
+            positions.append(8)
+        elif flag in ["nanFlux", "FlagNaNFlux"]:
+            # NaN flux, [0 9]
+            positions.append(9)
+        elif flag in ["emission", "FlagEmiss"]:
+            # Emission line detected by CU6, [0 9]
+            positions.append(10)
+        elif flag in ["nullFluxErr", "FlagNullUnc"]:
+            # Null uncertainty, [0 9]
+            positions.append(11)
+        elif flag in ["KMgiantPar", "FlagKM"]:
+            # KM-type giant stars, [0 1 2]
+            positions.append(12)
+        elif flag in [
+            "NUpLim",
+        ]:
+            # Nitrogen abundance upper limit, [0 1 2 9]
+            positions.append(13)
+        elif flag in [
+            "NUncer",
+        ]:
+            # Nitrogen abundance uncertainty quality, [0 1 2 9]
+            positions.append(14)
+        elif flag in [
+            "MgUpLim",
+        ]:
+            # Magnesium abundance upper limit, [0 1 2 9]
+            positions.append(15)
+        elif flag in [
+            "MgUncer",
+        ]:
+            # Magnesium abundance uncertainty quality, [0 1 2 9]
+            positions.append(16)
+        elif flag in [
+            "SiUpLim",
+        ]:
+            # Silicon abundance upper limit, [0 1 2 9]
+            positions.append(17)
+        elif flag in [
+            "SiUncer",
+        ]:
+            # Silicon abundance uncertainty quality, [0 1 2 9]
+            positions.append(18)
+        elif flag in [
+            "SUpLim",
+        ]:
+            # Sulphur abundance upper limit, [0 1 2 9]
+            positions.append(19)
+        elif flag in [
+            "SUncer",
+        ]:
+            # Sulphur abundance uncertainty quality, [0 1 2 9]
+            positions.append(20)
+        elif flag in [
+            "CaUpLim",
+        ]:
+            # Calcium abundance upper limit, [0 1 2 9]
+            positions.append(21)
+        elif flag in [
+            "CaUncer",
+        ]:
+            # Calcium abundance uncertainty quality, [0 1 2 9]
+            positions.append(22)
+        elif flag in [
+            "TiUpLim",
+        ]:
+            # Titanium abundance upper limit, [0 1 2 9]
+            positions.append(23)
+        elif flag in [
+            "TiUncer",
+        ]:
+            # Titanium abundance uncertainty quality, [0 1 2 9]
+            positions.append(24)
+        elif flag in [
+            "CrUpLim",
+        ]:
+            # Chromium abundance upper limit, [0 1 2 9]
+            positions.append(25)
+        elif flag in [
+            "CrUncer",
+        ]:
+            # Chromium abundance uncertainty quality, [0 1 2 9]
+            positions.append(26)
+        elif flag in [
+            "FeUpLim",
+        ]:
+            # Neutral iron abundance upper limit, [0 1 2 9]
+            positions.append(27)
+        elif flag in [
+            "FeUncer",
+        ]:
+            # Neutral iron abundance uncertainty quality, [0 1 2 9]
+            positions.append(28)
+        elif flag in [
+            "FeIIUpLim",
+        ]:
+            # Ionised iron abundance upper limit, [0 1 2 9]
+            positions.append(29)
+        elif flag in [
+            "FeIIUncer",
+        ]:
+            # Ionised iron abundance uncertainty quality, [0 1 2 9]
+            positions.append(30)
+        elif flag in [
+            "NiUpLim",
+        ]:
+            # Nickel abundance upper limit, [0 1 2 9]
+            positions.append(31)
+        elif flag in [
+            "NiUncer",
+        ]:
+            # Nickel abundance uncertainty quality, [0 1 2 9]
+            positions.append(32)
+        elif flag in [
+            "ZrUpLim",
+        ]:
+            # Zirconium abundance upper limit, [0 1 2 9]
+            positions.append(33)
+        elif flag in [
+            "ZrUncer",
+        ]:
+            # Zirconium abundance uncertainty quality, [0 1 2 9]
+            positions.append(34)
+        elif flag in [
+            "CeUpLim",
+        ]:
+            # Cerium abundance upper limit, [0 1 2 9]
+            positions.append(35)
+        elif flag in [
+            "CeUncer",
+        ]:
+            # Cerium abundance uncertainty quality, [0 1 2 9]
+            positions.append(36)
+        elif flag in [
+            "NdUpLim",
+        ]:
+            # Neodymium abundance upper limit, [0 1 2 9]
+            positions.append(37)
+        elif flag in [
+            "NdUncer",
+        ]:
+            # Neodymium abundance uncertainty quality, [0 1 2 9]
+            positions.append(38)
+        elif flag in [
+            "DeltaCNq",
+        ]:
+            # Cyanogen differential equivalent width quality, [0 9]
+            positions.append(39)
+        elif flag in [
+            "DIBq",
+        ]:
+            # DIB quality flag, [0 1 2 3 4 5 9]
+            positions.append(40)
+        else:
+            raise ValueError(f"{flag} unknown")
+    return positions
+
+
 def add_feh(table, cal=True, floatfill=-9999):
     if cal:
         mh = "MH_GSPSPEC_GAIA_CALIBRATED_LOGG"
