@@ -35,12 +35,12 @@ def get_gaiamain(
         keytable=a,
         dr=dr,
     )
-    gaiatable = funkykitten.standardize(gaiatable)
 
     if "source_id" in list(gaiatable.columns):
         gaiatable.rename_column("source_id", starid)
 
     gaiatable = funkykitten.add_parallaxwithoffset(gaiatable, dr=dr)
+
     gaiatable.rename_column("PARALLAX_GAIA", "ZPCORR_PARALLAX_GAIA")
 
     gaiatable = funkykitten.compute_gaiaphotometryerror(gaiatable, dr=dr, verbose=True)
@@ -107,6 +107,7 @@ def get_gspspec(
 
     if "source_id" in list(gspspectable.columns):
         gspspectable.rename_column(col, starid)
+
     a[starid] = a[starid].astype(str)
     gaiatable[starid] = gaiatable[starid].astype(str)
     gaiatable = join(gaiatable, gspspectable, join_type="left", keys=starid)

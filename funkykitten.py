@@ -96,12 +96,12 @@ def compute_gaiaphotometryerror(
     table: Table,
     dr: str = "DR3",
     verbose: bool = False,
-    error_gmag: str = "phot_g_mean_flux_error",
-    gmag: str = "phot_g_mean_flux",
-    error_bpmag: str = "phot_bp_mean_flux_error",
-    bpmag: str = "phot_bp_mean_flux",
-    error_rpmag: str = "phot_rp_mean_flux_error",
-    rpmag: str = "phot_rp_mean_flux",
+    error_gmag: str = "ERROR_PHOT_G_MEAN_FLUX_GAIA",
+    gmag: str = "phot_g_mean_flux_GAIA".upper(),
+    error_bpmag: str = "ERROR_PHOT_BP_MEAN_FLUX_GAIA",
+    bpmag: str = "phot_bp_mean_flux_GAIA".upper(),
+    error_rpmag: str = "ERROR_PHOT_RP_MEAN_FLUX_GAIA",
+    rpmag: str = "phot_rp_mean_flux_GAIA".upper(),
 ):
     # Compute photometry errors in magnitudes and a floor of 2.3 mmag in
     # quadrature as discussed in Arenou et al. 2018
@@ -172,20 +172,20 @@ def adql_escape(star: str):
 def add_parallaxwithoffset(
     table: Table,
     dr: str = "DR3",
-    parallaxcol: str = "parallax",
+    parallaxcol: str = "PARALLAX_GAIA",
     singleoffset: bool = False,
     verbose: bool = False,
-    gmag: str = "phot_g_mean_mag",
-    pseudocolour: str = "pseudocolour",
-    nueff: str = "nu_eff_used_in_astrometry",
-    ecl: str = "ecl_lat",
-    paramssolved: str = "astrometric_params_solved",
+    gmag: str = "phot_g_mean_mag_GAIA".upper(),
+    pseudocolour: str = "pseudocolour_GAIA".upper(),
+    nueff: str = "NU_EFF_ASTROMETRY_GAIA",
+    ecl: str = "ecl_lat_GAIA".upper(),
+    paramssolved: str = "astrometric_params_solved_GAIA".upper(),
 ):
     # Here we add the parallax columns with different offsets:
     assert parallaxcol in table.columns
     table.rename_column(parallaxcol, f"UNCORRECTED_{parallaxcol}")
 
-    usedcols = [f"UNCORRECTED_{parallaxcol}"]
+    usedcols = [f"UNCORRECTED_{parallaxcol}", gmag, pseudocolour, nueff, ecl, paramssolved]
     for uc in usedcols:
         if uc not in table.columns:
             if verbose:
@@ -289,9 +289,49 @@ def standardize(
         table[col].description = ""
         table[col].unit = None
     table = table.filled()
+    if catid is not None:
+        table = rename_columns(table, catid, debug=debug)
     table = make_ids_to_string(table)
     table = make_objects_to_unicode(table)
     table = replace_old_fillvalue(table, old)
+    return table
+
+
+the_rename_mapping = None
+
+
+def get_rename_mapping():
+    global the_rename_mapping
+    if the_rename_mapping is not None:
+        return the_rename_mapping
+    mapping = {}
+    here = os.path.realpath(os.path.dirname(__file__))
+    with open(os.path.join(here, "column_overview.txt"), newline="") as fp:
+        read = csv.reader(fp)
+        for line in read:
+            column = line[0]
+            oldnames = line[1].split()
+            for oldname in oldnames:
+                mapping[oldname] = column
+    the_rename_mapping = mapping
+    return mapping
+
+
+def rename_columns(table, catid, debug=False):
+    colnames = table.colnames
+    mapping = get_rename_mapping()
+    if debug:
+        for col in colnames:
+            print(
+                f"{col.upper()}_{catid.upper()},{col}_{catid},category,definition from {catid},0,0"
+            )
+    for col in colnames:
+        if col.endswith(str(catid)):
+            COL = col.replace(" ", "")
+        else:
+            COL = col.replace(" ", "") + "_" + str(catid)
+        new_name = mapping[COL]
+        table.rename_column(col, new_name)
     return table
 
 
@@ -368,4 +408,36 @@ def replace_old_fillvalue(table: Table, olds: list | float | str):
                     else:
                         mask = np.zeros(len(table[col].data), dtype=bool)
             table[col][mask] = new
+    return table
+
+
+def delete_unusedcols(table):
+    cols = []
+    ignore = []
+    co = os.path.join(os.path.dirname(__file__), "column_overview.txt")
+    with open(co, newline="") as fp:
+        read = csv.reader(fp)
+        for line in read:
+            colname = line[0]
+            category = line[2]
+            notused = line[4]
+            if category in ["DELETE"]:
+                ignore.append(colname)
+            elif notused == "1":
+                ignore.append(colname)
+            else:
+                cols.append(colname)
+
+    cols = set(cols)
+    ignore = set(ignore)
+    tablecols = set(table.columns)
+    unknowncols = tablecols - cols - ignore
+    if unknowncols:
+        print("Unknown columns:")
+        for c in sorted(unknowncols):
+            print(f"{c},")
+        raise SystemExit
+
+    catcolumns = sorted(cols & tablecols)
+    table = table[catcolumns]
     return table
