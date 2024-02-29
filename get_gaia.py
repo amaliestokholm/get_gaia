@@ -67,6 +67,7 @@ def get_gspspec(
     tempdir: str = "./example/gaia/",
     resultdir: str = "./results",
     resultsfile: str = "sample.ascii",
+    verbose: bool = False,
 ):
     # Which columns in 'gaiadr3.astrophysical_parameters' do you want to keep?
     gspspeccols = [
@@ -77,9 +78,9 @@ def get_gspspec(
         "mh_gspspec",
         "mh_gspspec_lower",
         "mh_gspspec_upper",
-        #    "sife_gspspec",
-        #    "sife_gspspec_lower",
-        #    "sife_gspspec_upper",
+        "sife_gspspec",
+        "sife_gspspec_lower",
+        "sife_gspspec_upper",
         "alphafe_gspspec",
         "alphafe_gspspec_lower",
         "alphafe_gspspec_upper",
@@ -101,9 +102,10 @@ def get_gspspec(
     gspspectable = gspspec.calibrate_all_gspspec(gspspectable)
 
     # Get overview
-    for col in list(gspspectable.columns):
-        if "_CALIBRATED" in col:
-            print(col)
+    if verbose:
+        for col in list(gspspectable.columns):
+            if "_CALIBRATED" in col:
+                print(col)
 
     if "source_id" in list(gspspectable.columns):
         gspspectable.rename_column(col, starid)
