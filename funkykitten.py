@@ -173,7 +173,7 @@ def adql_escape(star: str):
 def add_parallaxwithoffset(
     table: Table,
     dr: str = "DR3",
-    parallaxcol: str = "PARALLAX_GAIA",
+    parallaxcol: str = "parallax_GAIA".upper(),
     singleoffset: bool = False,
     verbose: bool = False,
     gmag: str = "phot_g_mean_mag_GAIA".upper(),
@@ -183,10 +183,11 @@ def add_parallaxwithoffset(
     paramssolved: str = "astrometric_params_solved_GAIA".upper(),
 ):
     # Here we add the parallax columns with different offsets:
-    assert parallaxcol in table.columns
-    table.rename_column(parallaxcol, f"UNCORRECTED_{parallaxcol}")
+    assert parallaxcol in table.columns, list(table.columns)
+    uncorrparallaxcolname = f"UNCORRECTED_{parallaxcol.upper()}"
+    table.rename_column(parallaxcol, uncorrparallaxcolname)
 
-    usedcols = [f"UNCORRECTED_{parallaxcol}", gmag, pseudocolour, nueff, ecl, paramssolved]
+    usedcols = [uncorrparallaxcolname, gmag, pseudocolour, nueff, ecl, paramssolved]
     for uc in usedcols:
         if uc not in table.columns:
             if verbose:
@@ -198,13 +199,13 @@ def add_parallaxwithoffset(
         if singleoffset:
             # Gaia Collaboration 2021a (https://arxiv.org/abs/2012.01533) offset
             # of 17 mas computed from quasars.
-            floatfill = get_fillvalue(table[f"UNCORRECTED_{parallaxcol}"])
+            floatfill = get_fillvalue(table[uncorrparallaxcolname])
             corrpar = np.ones(len(table)) * floatfill
-            corrparmask = table[f"UNCORRECTED_{parallaxcol}"] != floatfill
+            corrparmask = table[uncorrparallaxcolname] != floatfill
 
             st_par = np.copy(corrpar)
             st_par[corrparmask] = (
-                table[f"UNCORRECTED_{parallaxcol}"][corrparmask] + 0.017
+                table[uncorrparallaxcolname][corrparmask] + 0.017
             )
             st_par = Column(st_par, name="PARALLAX_GLOBALOFFSET_GAIA")
             table.add_column(st_par)
@@ -221,9 +222,9 @@ def add_parallaxwithoffset(
 
             zpt.load_tables()
 
-            floatfill = get_fillvalue(table[f"UNCORRECTED_{parallaxcol}"])
+            floatfill = get_fillvalue(table[uncorrparallaxcolname])
             corrpar = np.ones(len(table)) * floatfill
-            corrparmask = table[f"UNCORRECTED_{parallaxcol}"] != floatfill
+            corrparmask = table[uncorrparallaxcolname] != floatfill
 
             corr = zpt.get_zpt(
                 table[gmag][corrparmask],
@@ -262,7 +263,7 @@ def add_parallaxwithoffset(
             # Add corrected parallax as a column
             st_par = np.copy(corrpar)
             st_par[corrparmask] = (
-                table[f"UNCORRECTED_{parallaxcol}"][corrparmask] - corr
+                table[uncorrparallaxcolname][corrparmask] - corr
             )
             st_par = Column(st_par, name="PARALLAX_GAIA")
             table.add_column(st_par)
@@ -302,9 +303,9 @@ the_rename_mapping = None
 
 
 def get_rename_mapping():
-    global the_rename_mapping
-    if the_rename_mapping is not None:
-        return the_rename_mapping
+    #global the_rename_mapping
+    #if the_rename_mapping is not None:
+    #    return the_rename_mapping
     mapping = {}
     here = os.path.realpath(os.path.dirname(__file__))
     with open(os.path.join(here, "column_overview.txt"), newline="") as fp:
@@ -331,8 +332,9 @@ def rename_columns(table, catid, debug=False):
             COL = col.replace(" ", "")
         else:
             COL = col.replace(" ", "") + "_" + str(catid)
-        new_name = mapping[COL]
-        table.rename_column(col, new_name)
+        if not COL in list(mapping.values()):
+            new_name = mapping[COL]
+            table.rename_column(col, new_name)
     return table
 
 

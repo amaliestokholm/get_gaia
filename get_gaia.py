@@ -36,8 +36,7 @@ def get_gaiamain(
         dr=dr,
     )
 
-    if "source_id" in list(gaiatable.columns):
-        gaiatable.rename_column("source_id", starid)
+    gaiatable = funkykitten.standardize(gaiatable, catid='GAIA')
 
     gaiatable = funkykitten.add_parallaxwithoffset(gaiatable, dr=dr)
 
