@@ -13,11 +13,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--identifier")
 parser.add_argument("-p", "--projectname", default="mygaiaquery")
 parser.add_argument("-s", "--starid", default="SOURCE_ID_GAIA")
-parser.add_argument("-t", "--targetlist", default="./example/targetlist.ascii")
+parser.add_argument("-t", "--targetlist", default="None")
 parser.add_argument("--dr", default="DR3")
-parser.add_argument("--tempdir", default="./example/gaia")
-parser.add_argument("--resultdir", default="./results")
-parser.add_argument("--resultsfile", default="sample.ascii")
+parser.add_argument("--tempdir", default="None")
+parser.add_argument("--resultdir", default="None")
+parser.add_argument("--resultsfile", default="None")
 parser.add_argument("--gspspec", action="store_true")
 
 
@@ -26,10 +26,11 @@ def get_gaiamain(
     projectname: str,
     dr: str = "DR3",
     starid: str = "SOURCE_ID_GAIA",
-    tempdir: str = "./example/gaia/",
-    resultdir: str = "./results",
+    tempdir: str = "None",
+    resultdir: str = "None",
     resultsfile: str = "sample.ascii",
 ):
+
     gaiatable = funkykitten.find_gaia_from_sourceids(
         os.path.join(tempdir, f"{projectname}_gaia.vot"),
         keytable=a,
@@ -50,7 +51,6 @@ def get_gaiamain(
         overwrite=True,
     )
 
-    resultsfile = os.path.join(resultdir, resultsfile)
     print(f"Write results from the Gaia main catalogue to {resultsfile}")
     gaiatable.write(resultsfile, format="ascii.commented_header", overwrite=True)
 
@@ -107,9 +107,12 @@ def get_gspspec(
                 print(col)
 
     if "source_id" in list(gspspectable.columns):
-        gspspectable.rename_column(col, starid)
+        gspspectable.rename_column('source_id', starid)
+    if "SOURCE_ID" in list(gspspectable.columns):
+        gspspectable.rename_column('SOURCE_ID', starid)
 
-    a[starid] = a[starid].astype(str)
+    gspspectable[starid] = gspspectable[starid].astype(str)
+    gaiatable[starid] = gaiatable[starid].astype(str)
     gaiatable[starid] = gaiatable[starid].astype(str)
     gaiatable = join(gaiatable, gspspectable, join_type="left", keys=starid)
 
@@ -176,6 +179,19 @@ def main():
     dr = args.dr
 
     # Actually do stuff
+    if tempdir == "None":
+        tempdir = f"./projects/{projectname}/"
+    if resultdir == "None":
+        resultdir = f"./projects/{projectname}/results/"
+    if resultsfile == "None":
+        resultsfile = os.path.join(resultdir, f"{projectname}_results.ascii")
+    for path in [tempdir, resultdir]:
+        if not os.path.exists(path):
+            os.makedirs(path)
+    if targetlist == "None":
+        targetlist = os.path.join(tempdir, f"{projectname}.ascii")
+        assert os.path.exists(targetlist)
+
     if args.identifier is None:
         a = Table.read(targetlist, format="ascii.commented_header")
     else:
@@ -196,6 +212,7 @@ def main():
         a, projectname, dr, starid, tempdir, resultdir, resultsfile
     )
 
+    gaiatable.rename_column('SOURCE_ID', 'SOURCE_ID_GAIA')
     if gspspec:
         if not os.path.exists(resultdir):
             os.makedirs(resultdir)
