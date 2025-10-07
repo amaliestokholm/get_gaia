@@ -11,7 +11,7 @@ import gspspec
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--identifier")
-parser.add_argument("-p", "--projectname", default="mygaiaquery")
+parser.add_argument("-p", "--projectname")
 parser.add_argument("-s", "--starid", default="SOURCE_ID_GAIA")
 parser.add_argument("-t", "--targetlist", default="None")
 parser.add_argument("--dr", default="DR3")
@@ -24,20 +24,19 @@ parser.add_argument("--gspspec", action="store_true")
 def get_gaiamain(
     a,
     projectname: str,
+    tempdir: str,
+    resultdir: str,
+    resultsfile: str,
     dr: str = "DR3",
     starid: str = "SOURCE_ID_GAIA",
-    tempdir: str = "None",
-    resultdir: str = "None",
-    resultsfile: str = "sample.ascii",
 ):
-
     gaiatable = funkykitten.find_gaia_from_sourceids(
         os.path.join(tempdir, f"{projectname}_gaia.vot"),
         keytable=a,
         dr=dr,
     )
 
-    gaiatable = funkykitten.standardize(gaiatable, catid='GAIA')
+    gaiatable = funkykitten.standardize(gaiatable, catid="GAIA")
 
     gaiatable = funkykitten.add_parallaxwithoffset(gaiatable, dr=dr)
 
@@ -45,15 +44,14 @@ def get_gaiamain(
 
     gaiatable = funkykitten.compute_gaiaphotometryerror(gaiatable, dr=dr, verbose=True)
 
+    outputfile = os.path.join(resultdir, resultsfile)
     gaiatable.write(
-        os.path.join(tempdir, f"gaiatable_{projectname}.ascii"),
+        outputfile,
         format="ascii.commented_header",
         overwrite=True,
     )
 
-    print(f"Write results from the Gaia main catalogue to {resultsfile}")
-    gaiatable.write(resultsfile, format="ascii.commented_header", overwrite=True)
-
+    print(f"Write results from the Gaia main catalogue to {outputfile}")
     return gaiatable
 
 
@@ -61,11 +59,11 @@ def get_gspspec(
     a: Table,
     gaiatable: Table,
     projectname: str,
+    tempdir: str,
+    resultdir: str,
+    resultsfile: str,
     dr: str = "DR3",
     starid: str = "SOURCE_ID_GAIA",
-    tempdir: str = "./example/gaia/",
-    resultdir: str = "./results",
-    resultsfile: str = "sample.ascii",
     verbose: bool = False,
 ):
     # Which columns in 'gaiadr3.astrophysical_parameters' do you want to keep?
@@ -100,16 +98,15 @@ def get_gspspec(
 
     gspspectable = gspspec.calibrate_all_gspspec(gspspectable)
 
-    # Get overview
     if verbose:
         for col in list(gspspectable.columns):
             if "_CALIBRATED" in col:
                 print(col)
 
     if "source_id" in list(gspspectable.columns):
-        gspspectable.rename_column('source_id', starid)
+        gspspectable.rename_column("source_id", starid)
     if "SOURCE_ID" in list(gspspectable.columns):
-        gspspectable.rename_column('SOURCE_ID', starid)
+        gspspectable.rename_column("SOURCE_ID", starid)
 
     gspspectable[starid] = gspspectable[starid].astype(str)
     gaiatable[starid] = gaiatable[starid].astype(str)
@@ -180,17 +177,16 @@ def main():
 
     # Actually do stuff
     if tempdir == "None":
-        tempdir = f"./projects/{projectname}/"
+        tempdir = f"./projects/{projectname}/temp/"
     if resultdir == "None":
         resultdir = f"./projects/{projectname}/results/"
     if resultsfile == "None":
-        resultsfile = os.path.join(resultdir, f"{projectname}_results.ascii")
+        resultsfile = f"{projectname}_gaiaquery.ascii"
     for path in [tempdir, resultdir]:
         if not os.path.exists(path):
             os.makedirs(path)
     if targetlist == "None":
         targetlist = os.path.join(tempdir, f"{projectname}.ascii")
-        assert os.path.exists(targetlist)
 
     if args.identifier is None:
         a = Table.read(targetlist, format="ascii.commented_header")
@@ -209,10 +205,10 @@ def main():
 
     # Get Gaia Main
     gaiatable = get_gaiamain(
-        a, projectname, dr, starid, tempdir, resultdir, resultsfile
+        a=a, projectname=projectname, dr=dr, starid=starid, tempdir=tempdir, resultdir=resultdir, resultsfile=resultsfile
     )
 
-    gaiatable.rename_column('SOURCE_ID', 'SOURCE_ID_GAIA')
+    gaiatable.rename_column("SOURCE_ID", "SOURCE_ID_GAIA")
     if gspspec:
         if not os.path.exists(resultdir):
             os.makedirs(resultdir)
